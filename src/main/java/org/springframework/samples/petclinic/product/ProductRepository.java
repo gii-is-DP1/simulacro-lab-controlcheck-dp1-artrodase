@@ -28,5 +28,6 @@ public interface ProductRepository extends CrudRepository<Product, Integer> {
     
     Optional<Product> findById(int id);
     Product findByName(String name);
-    Product save(Product p);
+    
+    public Product save(Product p);
 }

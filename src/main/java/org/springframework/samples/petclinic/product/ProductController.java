@@ -1,6 +1,6 @@
 package org.springframework.samples.petclinic.product;
 
-import java.time.LocalDateTime;
+import java.lang.ProcessBuilder.Redirect;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
@@ -15,6 +15,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 @Controller
 @RequestMapping("/product")
@@ -35,7 +36,7 @@ public class ProductController {
 	}
 
 	@PostMapping(value = "/create")
-	public String saveNewGame(@Valid Product product, BindingResult result, ModelMap model) {
+	public String saveNewGame( RedirectAttributes rd, @Valid Product product, BindingResult result, ModelMap model) {
 		if (result.hasErrors()) {
 			model.put("message", "There are some errors");
 			System.out.println(result);
@@ -44,10 +45,9 @@ public class ProductController {
 			model.put("prodType", pT);
 			return "products/createOrUpdateProductForm";
 		}else {
-			
-			product.setId(3);
 			productService.save(product);
-			return "redirect:/product";
+			model.put("message", String.format("the product %s was succesfully added", product.getName()));
+			return "welcome";
 		}
 		 
 		
